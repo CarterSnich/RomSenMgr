@@ -14,7 +14,7 @@ const isShowing = computed({
 </script>
 
 <template>
-  <UModal v-model="isShowing" prevent-close>
+  <UModal v-model="isShowing" prevent-close fullscreen>
     <UCard :ui="ui">
       <div class="flex ps-4 pb-4 items-center justify-between">
         <h3

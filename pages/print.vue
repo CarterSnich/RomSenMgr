@@ -8,22 +8,49 @@ const options: Intl.DateTimeFormatOptions = {
   year: "numeric",
 };
 const dateString = now.toLocaleDateString("en-US", options).toUpperCase();
+
+let $window = window;
 </script>
 
 <template>
-  <div id="paper" class="p-4">
+  <div
+    id="header"
+    class="flex gap-4 items-center p-4 border-b sticky top-0 bg-white"
+  >
+    <UButton
+      icon="i-heroicons-arrow-left-16-solid"
+      color="primary"
+      variant="solid"
+      :trailing="false"
+      @click="navigateTo('/')"
+    />
+    <h1>Export as PDF</h1>
+
+    <UButton
+      class="ms-auto"
+      icon="i-heroicons-printer-solid"
+      color="primary"
+      variant="solid"
+      :trailing="false"
+      label="Print"
+      @click="$window.print()"
+    />
+  </div>
+  <div id="paper" class="p-4 grow">
     <table class="w-full table-auto">
-      <caption class="mb-4">
-        <h1 class="font-bold">
-          <input
-            class="text-center w-full"
-            type="text"
-            value="MASTERLIST OF SENIOR CITIZENS OF BRGY. ROMUALDEZ, MACARTHUR, LEYTE"
-          />
-        </h1>
-        <p>
-          <input class="text-center w-full" type="text" :value="dateString" />
-        </p>
+      <caption>
+        <div class="grid gap-1 mb-4">
+          <h1 class="font-bold">
+            <input
+              class="text-center w-full"
+              type="text"
+              value="MASTERLIST OF SENIOR CITIZENS OF BRGY. ROMUALDEZ, MACARTHUR, LEYTE"
+            />
+          </h1>
+          <p>
+            <input class="text-center w-full" type="text" :value="dateString" />
+          </p>
+        </div>
       </caption>
       <thead>
         <tr>
@@ -73,6 +100,10 @@ const dateString = now.toLocaleDateString("en-US", options).toUpperCase();
 }
 
 @media print {
+  #header {
+    display: none;
+  }
+
   #paper {
     padding: 0;
   }

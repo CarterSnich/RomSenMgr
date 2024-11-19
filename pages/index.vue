@@ -10,6 +10,7 @@ const { data, refresh, status } = await useAsyncData(() =>
 
 const addSeniorModal = ref(false);
 const deleteSeniorModal = ref(false);
+
 const dataToDelete = ref<Senior>();
 
 const addForm = ref();
@@ -406,7 +407,6 @@ const filteredRows = computed(() => {
             type="date"
             :value="row.birthdate"
             name="birthdate"
-            autocomplete="off"
             autofocus
           />
           <UButton
