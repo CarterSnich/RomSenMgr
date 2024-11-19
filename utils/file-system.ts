@@ -16,17 +16,6 @@ function _initDir() {
   }
 }
 
-export function createFile(data: Senior) {
-  try {
-    _initDir();
-    const stringed = JSON.stringify(data);
-    const fileName = `${data.id}.json`;
-    FileSystem.writeFileSync(Path.join(DIR_PATH, fileName), stringed);
-  } catch (error) {
-    throw error;
-  }
-}
-
 export function retrieveFiles() {
   try {
     return FileSystem.readdirSync(DIR_PATH);
@@ -44,9 +33,12 @@ export function readFile(path: string): Senior {
   }
 }
 
-export function deleteFile(path: string) {
+export function createFile(data: Senior) {
   try {
-    FileSystem.rmSync(path);
+    _initDir();
+    const stringed = JSON.stringify(data);
+    const fileName = `${data.id}.json`;
+    FileSystem.writeFileSync(Path.join(DIR_PATH, fileName), stringed);
   } catch (error) {
     throw error;
   }
@@ -56,6 +48,14 @@ export function updateFile(path: string, data: Senior) {
   try {
     const stringed = JSON.stringify(data);
     FileSystem.writeFileSync(path, stringed);
+  } catch (error) {
+    throw error;
+  }
+}
+
+export function deleteFile(path: string) {
+  try {
+    FileSystem.rmSync(path);
   } catch (error) {
     throw error;
   }

@@ -110,10 +110,12 @@ const tableColumns: TableColumn[] = [
   {
     key: "firstname",
     label: "First name",
+    sortable: true,
   },
   {
     key: "middlename",
     label: "Middlename",
+    sortable: true,
   },
   {
     key: "birthdate",
@@ -122,6 +124,7 @@ const tableColumns: TableColumn[] = [
   {
     key: "age",
     label: "Age",
+    sortable: true,
   },
   {
     key: "osca",
@@ -437,7 +440,7 @@ const filteredRows = computed(() => {
 
       <!-- AGE -->
       <template #age-data="{ row }">
-        <p class="grow text-black">{{ getAgeFromDate(row.birthdate) }} y/o</p>
+        <p class="grow text-black">{{ row.age }} y/o</p>
       </template>
 
       <!-- OSCA NAME -->
