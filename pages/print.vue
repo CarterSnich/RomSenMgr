@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const { data } = await useAsyncData(() => $fetch("/api/retrieve"));
 
+const modal = ref(false);
+
 const now = new Date();
 const options: Intl.DateTimeFormatOptions = {
   month: "long",
@@ -25,7 +27,6 @@ let $window = window;
       @click="navigateTo('/')"
     />
     <h1>Export as PDF</h1>
-
     <UButton
       class="ms-auto"
       icon="i-heroicons-printer-solid"
@@ -33,7 +34,7 @@ let $window = window;
       variant="solid"
       :trailing="false"
       label="Print"
-      @click="$window.print()"
+      @click="modal = true"
     />
   </div>
   <div id="paper" class="p-4 grow">
@@ -92,13 +93,38 @@ let $window = window;
       </tbody>
     </table>
   </div>
+  <MyModal v-model="modal" id="modal">
+    <template #header-text>Before exporting...</template>
+    <template #body-content>
+      <p>
+        Print the document as a PDF in <strong>landscape orientation</strong>.
+        Set the <strong>paper size</strong> to <strong>Folio</strong> or any
+        size measuring <strong>8.5 x 13 inches</strong>. Ensure a margin of at
+        least <strong>0.25 inches</strong> on all sides.
+      </p>
+
+      <div class="flex gap-4 justify-end">
+        <UButton
+          label="Continue"
+          @click="
+            () => {
+              modal = false;
+              $window.print();
+            }
+          "
+        />
+      </div>
+    </template>
+  </MyModal>
 </template>
 
 <style scoped>
 * {
   font-family: Arial, Helvetica, sans-serif;
 }
+</style>
 
+<style>
 @media print {
   #header {
     display: none;
@@ -106,6 +132,10 @@ let $window = window;
 
   #paper {
     padding: 0;
+  }
+
+  #modal {
+    display: none !important;
   }
 }
 </style>
