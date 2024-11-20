@@ -102,7 +102,6 @@ let $window = window;
         size measuring <strong>8.5 x 13 inches</strong>. Ensure a margin of at
         least <strong>0.25 inches</strong> on all sides.
       </p>
-
       <div class="flex gap-4 justify-end">
         <UButton
           label="Continue"

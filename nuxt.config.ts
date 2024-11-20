@@ -17,4 +17,5 @@ export default defineNuxtConfig({
   colorMode: {
     preference: "light",
   },
+  pages: true,
 });
