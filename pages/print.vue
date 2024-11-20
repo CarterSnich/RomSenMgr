@@ -26,7 +26,7 @@ let $window = window;
       :trailing="false"
       @click="navigateTo('/')"
     />
-    <h1>Export as PDF</h1>
+    <h1>Print preview</h1>
     <UButton
       class="ms-auto"
       icon="i-heroicons-printer-solid"
@@ -94,13 +94,14 @@ let $window = window;
     </table>
   </div>
   <MyModal v-model="modal" id="modal">
-    <template #header-text>Before exporting...</template>
+    <template #header-text>Before printing...</template>
     <template #body-content>
       <p>
-        Print the document as a PDF in <strong>landscape orientation</strong>.
-        Set the <strong>paper size</strong> to <strong>Folio</strong> or any
-        size measuring <strong>8.5 x 13 inches</strong>. Ensure a margin of at
-        least <strong>0.25 inches</strong> on all sides.
+        Print the document in <strong>landscape orientation</strong> with a
+        paper size of <strong>Folio (8.5 x 13 inches)</strong> or equivalent.
+        Scale the content to <strong>fit the page width</strong>, ensuring
+        margins of at least <strong>0.25 inches</strong> on all sides. To save
+        it as PDF, use <strong>CutePDF Writer</strong>.
       </p>
       <div class="flex gap-4 justify-end">
         <UButton

@@ -215,12 +215,12 @@ const filteredRows = computed(() => {
           <span class="hidden md:block">Refresh</span>
         </UButton>
         <UButton
-          icon="i-heroicons-document-arrow-down-16-solid"
+          icon="i-heroicons-printer-solid"
           class="rounded-none"
           variant="ghost"
           @click="navigateTo('/print')"
         >
-          <span class="hidden md:block">Export</span>
+          <span class="hidden md:block">Print</span>
         </UButton>
       </div>
     </div>
