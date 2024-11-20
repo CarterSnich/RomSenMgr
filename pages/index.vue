@@ -3,6 +3,10 @@ import type { FormSubmitEvent, TableColumn } from "#ui/types";
 import { z } from "zod";
 import type { Senior } from "../utils/models";
 
+useHead({
+  title: "Index | RomSenMgr",
+});
+
 const searchKey = ref("");
 const { data, refresh, status } = await useAsyncData(() =>
   $fetch("/api/retrieve")
@@ -283,11 +287,12 @@ const filteredRows = computed(() => {
             @click="editableCell = null"
           />
         </form>
-        <span class="flex items-center gap-2" v-else>
+        <span class="group flex items-center gap-2" v-else>
           <p class="grow text-black">
             {{ row.lastname }}
           </p>
           <UButton
+            class="invisible group-hover:visible"
             icon="i-heroicons-pencil-square"
             size="sm"
             color="primary"
@@ -330,11 +335,12 @@ const filteredRows = computed(() => {
             @click="editableCell = null"
           />
         </form>
-        <span class="flex items-center gap-2" v-else>
+        <span class="group flex items-center gap-2" v-else>
           <p class="grow text-black">
             {{ row.firstname }}
           </p>
           <UButton
+            class="invisible group-hover:visible"
             icon="i-heroicons-pencil-square"
             size="sm"
             color="primary"
@@ -377,11 +383,12 @@ const filteredRows = computed(() => {
             @click="editableCell = null"
           />
         </form>
-        <span class="flex items-center gap-2" v-else>
+        <span class="group flex items-center gap-2" v-else>
           <p class="grow text-black">
             {{ row.middlename }}
           </p>
           <UButton
+            class="invisible group-hover:visible"
             icon="i-heroicons-pencil-square"
             size="sm"
             color="primary"
@@ -424,11 +431,12 @@ const filteredRows = computed(() => {
             @click="editableCell = null"
           />
         </form>
-        <span class="flex items-center gap-2" v-else>
+        <span class="group flex items-center gap-2" v-else>
           <p class="grow text-black">
             {{ formatStringDate(row.birthdate) }}
           </p>
           <UButton
+            class="invisible group-hover:visible"
             icon="i-heroicons-pencil-square"
             size="sm"
             color="primary"
@@ -476,11 +484,12 @@ const filteredRows = computed(() => {
             @click="editableCell = null"
           />
         </form>
-        <span class="flex items-center gap-2" v-else>
+        <span class="group flex items-center gap-2" v-else>
           <p class="grow text-black">
             {{ row.osca }}
           </p>
           <UButton
+            class="invisible group-hover:visible"
             icon="i-heroicons-pencil-square"
             size="sm"
             color="primary"
@@ -523,11 +532,12 @@ const filteredRows = computed(() => {
             @click="editableCell = null"
           />
         </form>
-        <span class="flex items-center gap-2" v-else>
+        <span class="group flex items-center gap-2" v-else>
           <p class="grow text-black">
             {{ row.ncsc }}
           </p>
           <UButton
+            class="invisible group-hover:visible"
             icon="i-heroicons-pencil-square"
             size="sm"
             color="primary"
@@ -570,11 +580,12 @@ const filteredRows = computed(() => {
             @click="editableCell = null"
           />
         </form>
-        <span class="flex items-center gap-2" v-else>
+        <span class="group flex items-center gap-2" v-else>
           <p class="grow text-black">
             {{ row.phylsis }}
           </p>
           <UButton
+            class="invisible group-hover:visible"
             icon="i-heroicons-pencil-square"
             size="sm"
             color="primary"
@@ -618,15 +629,12 @@ const filteredRows = computed(() => {
             autofocus
           />
         </UFormGroup>
-
         <UFormGroup label="First name" name="firstname">
           <UInput v-model="state.firstname" size="md" autocomplete="off" />
         </UFormGroup>
-
         <UFormGroup label="Middle name" name="middlename">
           <UInput v-model="state.middlename" size="md" autocomplete="off" />
         </UFormGroup>
-
         <UFormGroup label="Birthdate" name="birthdate">
           <input
             type="date"
@@ -634,21 +642,17 @@ const filteredRows = computed(() => {
             class="relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-3 py-2 shadow-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400"
           />
         </UFormGroup>
-
         <UFormGroup label="OSCA Number" name="osca">
           <UInput v-model="state.osca" autocomplete="off" size="md" />
         </UFormGroup>
-
         <UFormGroup label="NCSC Ref. No." name="ncsc">
           <UInput v-model="state.ncsc" size="md" autocomplete="off" />
         </UFormGroup>
-
         <UFormGroup label="PHYLSIS ID No." name="phylsis">
           <UInput v-model="state.phylsis" size="md" autocomplete="off" />
         </UFormGroup>
-
         <div class="flex gap-4 justify-end">
-          <UButton type="submit">Submit</UButton>
+          <UButton label="Submit" type="submit" />
           <UButton label="Cancel" @click="addSeniorModal = false" />
         </div>
       </UForm>
