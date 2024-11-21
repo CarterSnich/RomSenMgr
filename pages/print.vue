@@ -5,15 +5,18 @@ const { data } = await useAsyncData(() => $fetch("/api/retrieve"));
 
 const modal = ref(false);
 
-const headerText =
-  "MASTERLIST OF SENIOR CITIZENS OF BRGY. ROMUALDEZ, MACARTHUR, LEYTE";
-const date = new Date()
-  .toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  })
-  .toUpperCase();
+const headerText = ref(
+  "MASTERLIST OF SENIOR CITIZENS OF BRGY. ROMUALDEZ, MACARTHUR, LEYTE"
+);
+const date = ref(
+  new Date()
+    .toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    })
+    .toUpperCase()
+);
 </script>
 
 <template>
@@ -39,18 +42,23 @@ const date = new Date()
       @click="modal = true"
     />
   </div>
-  <div id="paper" class="p-4 grow">
-    <div class="flex flex-col items-center gap-1 mb-4">
+  <div id="paper" class="grow">
+    <div class="flex flex-col items-center gap-1 mb-4 print:hidden">
       <input
         type="text"
         class="text-center w-9/12 font-bold border border-green-200"
-        :value="headerText"
+        v-model="headerText"
       />
       <input
         type="text"
         class="text-center w-80 border border-green-200"
-        :value="date"
+        v-model="date"
       />
+    </div>
+
+    <div class="hidden print:block">
+      <h1 class="text-center font-bold">{{ headerText }}</h1>
+      <p class="text-center">{{ date }}</p>
     </div>
     <table class="w-full table-auto">
       <thead>
@@ -119,7 +127,17 @@ const date = new Date()
 </template>
 
 <style scoped>
+#paper {
+  padding: 5mm;
+}
+
 #paper * {
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@media print {
+  #print * {
+    font-size: 12pt;
+  }
 }
 </style>
