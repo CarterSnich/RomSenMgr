@@ -178,7 +178,7 @@ const filteredRows = computed(() => {
       >
         <div class="w-full flex items-stretch">
           <UInput
-            type="search"
+            type="text"
             v-model="searchKey"
             variant="none"
             size="xl"
