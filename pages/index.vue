@@ -86,9 +86,10 @@ async function confirmDelete() {
 }
 
 async function updateCellValue(event: Event, id: string) {
-  const form = event.target;
-  const field = form[0].name;
-  const value = form[0].value.toUpperCase();
+  const form = event.target as HTMLFormElement;
+  const input = form[0] as HTMLInputElement;
+  const field = input.name;
+  const value = input.value.toUpperCase();
 
   await $fetch(`/api/update/${id}`, {
     method: "PUT",
