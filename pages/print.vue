@@ -1,23 +1,25 @@
 <script setup lang="ts">
+const $window = window;
+
 const { data } = await useAsyncData(() => $fetch("/api/retrieve"));
 
 const modal = ref(false);
 
-const now = new Date();
-const options: Intl.DateTimeFormatOptions = {
-  month: "long",
-  day: "numeric",
-  year: "numeric",
-};
-const dateString = now.toLocaleDateString("en-US", options).toUpperCase();
-
-let $window = window;
+const headerText =
+  "MASTERLIST OF SENIOR CITIZENS OF BRGY. ROMUALDEZ, MACARTHUR, LEYTE";
+const date = new Date()
+  .toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  })
+  .toUpperCase();
 </script>
 
 <template>
   <div
     id="header"
-    class="flex gap-4 items-center p-4 border-b sticky top-0 bg-white"
+    class="flex gap-4 items-center p-4 border-b sticky top-0 bg-white print:hidden"
   >
     <UButton
       icon="i-heroicons-arrow-left-16-solid"
@@ -38,21 +40,19 @@ let $window = window;
     />
   </div>
   <div id="paper" class="p-4 grow">
+    <div class="flex flex-col items-center gap-1 mb-4">
+      <input
+        type="text"
+        class="text-center w-9/12 font-bold border border-green-200"
+        :value="headerText"
+      />
+      <input
+        type="text"
+        class="text-center w-80 border border-green-200"
+        :value="date"
+      />
+    </div>
     <table class="w-full table-auto">
-      <caption>
-        <div class="grid gap-1 mb-4">
-          <h1 class="font-bold">
-            <input
-              class="text-center w-full"
-              type="text"
-              value="MASTERLIST OF SENIOR CITIZENS OF BRGY. ROMUALDEZ, MACARTHUR, LEYTE"
-            />
-          </h1>
-          <p>
-            <input class="text-center w-full" type="text" :value="dateString" />
-          </p>
-        </div>
-      </caption>
       <thead>
         <tr>
           <th class="border-2 border-black">NO.</th>
@@ -93,7 +93,7 @@ let $window = window;
       </tbody>
     </table>
   </div>
-  <MyModal v-model="modal" id="modal">
+  <MyModal v-model="modal" id="modal" class="print:hidden">
     <template #header-text>Before printing...</template>
     <template #body-content>
       <p>
@@ -119,23 +119,7 @@ let $window = window;
 </template>
 
 <style scoped>
-* {
+#paper * {
   font-family: Arial, Helvetica, sans-serif;
-}
-</style>
-
-<style>
-@media print {
-  #header {
-    display: none;
-  }
-
-  #paper {
-    padding: 0;
-  }
-
-  #modal {
-    display: none !important;
-  }
 }
 </style>
