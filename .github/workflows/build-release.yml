@@ -12,6 +12,17 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
+    - name: Get Commit ID
+      id: get_commit_id
+      run: |
+        COMMIT_ID=$(git rev-parse --short HEAD)
+        echo "COMMIT_ID=$COMMIT_ID" >> $GITHUB_ENV
+
+    - name: Test 
+      run: |
+        echo ${{ env.COMMIT_ID }}
+        echo $COMMIT_ID
       
     - name: Set up Node.js
       uses: actions/setup-node@v3
@@ -43,6 +54,6 @@ jobs:
       with:
         files: |
           romsenmgr.tar.gz
-        tag_name: $COMMIT_ID
+        tag_name: ${{ env.COMMIT_ID }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
