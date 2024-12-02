@@ -25,7 +25,7 @@ jobs:
     - name: Compress .output into tarball
       run: |
         COMMIT_ID=$(git rev-parse --short HEAD)
-        tar -czvf "./${COMMIT_ID}.tar.gz" ./output  # Adjust if the output directory is different
+        tar -czvf "./${COMMIT_ID}.tar.gz" -C .output .
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
