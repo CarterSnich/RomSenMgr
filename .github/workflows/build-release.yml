@@ -30,7 +30,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Get commit ID and create a tag
-      run:
+      run: |
         COMMIT_ID=$(git rev-parse --short HEAD)
         git tag $COMMIT_ID
         git push origin $COMMIT_ID
