@@ -30,16 +30,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Get commit ID and create a tag
-      uses: actions/github-script@v5
-      with:
-        script: |
-          COMMIT_ID=$(git rev-parse --short HEAD)
-          github.rest.git.createRef({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            ref: `refs/tags/${process.env.COMMIT_ID}`,
-            sha: context.sha
-          })
+      run:
+        COMMIT_ID=$(git rev-parse --short HEAD)
+        git tag $COMMIT_ID
+        git push origin $COMMIT_ID
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
