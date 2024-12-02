@@ -4,16 +4,22 @@ import { type Senior } from "~/utils/models.js";
 
 export { FileSystem, Path };
 
+const FOLDER_NAME = "romsenmgr";
 export const DIR_PATH = Path.join(
   `${process.env.USERPROFILE || process.env.HOME}`,
-  "romsenmgr"
+  FOLDER_NAME
 );
 
 function _initDir() {
+  console.log("[FILE SYSTEM] Initializing directory");
   try {
-    const dirPath = Path.dirname(DIR_PATH);
-    if (!FileSystem.existsSync(dirPath)) {
-      FileSystem.mkdirSync(dirPath, { recursive: true });
+    const isPathExists = FileSystem.existsSync(DIR_PATH);
+    console.log(`[FILE SYSTEM] ${DIR_PATH} exists: ${isPathExists}`);
+
+    if (!isPathExists) {
+      console.log(`[FILE SYSTEM] Creating ${DIR_PATH}`);
+      FileSystem.mkdirSync(DIR_PATH, { recursive: true });
+      console.log(`[FILE SYSTEM] Done`);
     }
   } catch (error) {
     throw error;
@@ -21,17 +27,21 @@ function _initDir() {
 }
 
 export function retrieveFiles() {
+  console.log("[FILE SYSTEM] Retrieving files");
   try {
     _initDir();
-    return FileSystem.readdirSync(DIR_PATH);
+    const files = FileSystem.readdirSync(DIR_PATH);
+    console.log(`[FILE SYSTEM] ${files.length} file(s) retrieved`);
+    return files;
   } catch (error) {
     throw error;
   }
 }
 
 export function readFile(path: string): Senior {
+  console.log(`[FILE SYSTEM] Reading file ${path}`);
+
   try {
-    _initDir();
     const raw = FileSystem.readFileSync(path, "utf-8");
     return JSON.parse(raw);
   } catch (error) {
@@ -40,6 +50,7 @@ export function readFile(path: string): Senior {
 }
 
 export function createFile(data: Senior) {
+  console.log("[FILE SYSTEM] Creating file");
   try {
     _initDir();
     const stringed = JSON.stringify(data);
@@ -51,8 +62,8 @@ export function createFile(data: Senior) {
 }
 
 export function updateFile(path: string, data: Senior) {
+  console.log(`[FILE SYSTEM] Updating file ${path}`);
   try {
-    _initDir();
     const stringed = JSON.stringify(data);
     FileSystem.writeFileSync(path, stringed);
   } catch (error) {
@@ -61,8 +72,9 @@ export function updateFile(path: string, data: Senior) {
 }
 
 export function deleteFile(path: string) {
+  console.log(`[FILE SYSTEM] Deleting ${path}`);
+
   try {
-    _initDir();
     FileSystem.rmSync(path);
   } catch (error) {
     throw error;
