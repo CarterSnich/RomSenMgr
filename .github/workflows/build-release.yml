@@ -43,7 +43,7 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: |
-          ./${COMMIT_ID}.tar.gz  # Use the generated tarball for the release
+          ./${{ COMMIT_ID }}.tar.gz  # Use the generated tarball for the release
         tag_name: ${{ github.sha }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
