@@ -44,6 +44,6 @@ jobs:
       with:
         files: |
           ./${COMMIT_ID}.tar.gz  # Use the generated tarball for the release
-        tag_name: ${{ steps.compress.outputs.commit_id }}  # Pass the COMMIT_ID to tag_name
+        tag_name: ${{ github.sha }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
