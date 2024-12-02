@@ -12,15 +12,7 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-
-    - name: Create Git tag
-      run: |
-        COMMIT_ID=$(git rev-parse --short HEAD)
-        git tag $COMMIT_ID
-        git push origin $COMMIT_ID  # Ensure the tag is pushed to the remote repository
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
@@ -39,6 +31,14 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
+    - name: Create Git tag
+      run: |
+        COMMIT_ID=$(git rev-parse --short HEAD)
+        git tag $COMMIT_ID
+        git push origin $COMMIT_ID  # Ensure the tag is pushed to the remote repository
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
