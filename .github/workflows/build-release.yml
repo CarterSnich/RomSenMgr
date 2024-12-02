@@ -22,17 +22,25 @@ jobs:
     - name: Build the project
       run: npm run build
 
+    - name: Compress .output into tarball
+      run: |
+        COMMIT_ID=$(git rev-parse --short HEAD)
+        tar -czvf "./${COMMIT_ID}.tar.gz" ./output  # Adjust if the output directory is different
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Get commit ID and create a tag
+      run: |
+        COMMIT_ID=$(git rev-parse --short HEAD)
+        git tag $COMMIT_ID
+        git push origin $COMMIT_ID
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          ./build/**/*  # Adjust the build folder if necessary
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Get commit ID and create a release
-      run: |
-        COMMIT_ID=$(git rev-parse --short HEAD)
-        gh release create $COMMIT_ID ./build/**/* --title "$COMMIT_ID" --notes "Release for commit $COMMIT_ID"
+          ./${COMMIT_ID}.tar.gz  # Use the generated tarball for the release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
