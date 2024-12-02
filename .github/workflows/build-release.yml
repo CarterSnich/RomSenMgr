@@ -29,11 +29,12 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Create Tag
     - uses: Klemensas/action-autotag@stable
       with:
-        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Create Release (No tag)
+    - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
         files: |
