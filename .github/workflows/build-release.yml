@@ -40,11 +40,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Create Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         files: |
           ./${COMMIT_ID}.tar.gz  # Use the generated tarball for the release
-        prerelease: false  # Optional: set this if the release is not a prerelease
-        tag_name: ${{ env.COMMIT_ID }}
+        tag_name: ${{ steps.compress.outputs.commit_id }}  # Pass the COMMIT_ID to tag_name
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
