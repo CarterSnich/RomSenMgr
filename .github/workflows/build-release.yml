@@ -26,8 +26,7 @@ jobs:
 
     - name: Compress .output into tarball
       run: |
-        COMMIT_ID=$(git rev-parse --short HEAD)
-        tar -czvf "./${COMMIT_ID}.tar.gz" -C .output .
+        tar -czvf ./romsenmgr.tar.gz -C .output .
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
@@ -43,7 +42,7 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: |
-          ./${{ COMMIT_ID }}.tar.gz  # Use the generated tarball for the release
+          romsenmgr.tar.gz
         tag_name: ${{ github.sha }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
