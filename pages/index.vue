@@ -72,7 +72,7 @@ const state = reactive({
   lastname: "",
   firstname: "",
   middlename: "",
-  middlename: "",
+  suffix: "",
   birthdate: "",
   osca: "",
   ncsc: "",
