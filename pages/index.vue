@@ -17,8 +17,7 @@ watch(
   (newStatus) => {
     if (newStatus === "success") {
       toast.add({
-        title: "Fetch files",
-        description: "Files retrieved successfully",
+        title: "Fetch files successfully",
         color: "primary",
         close: {
           icon: "i-heroicons-x-mark-20-solid",
@@ -27,8 +26,7 @@ watch(
       });
     } else {
       toast.add({
-        title: "Fetch files",
-        description: error.value.statusMessage,
+        title: "Failed to fetch files.",
         color: "red",
         close: {
           icon: "i-heroicons-x-mark-20-solid",
@@ -61,6 +59,7 @@ const schema = z.object({
     .optional()
     .or(z.literal(""))
     .transform((v) => v?.toUpperCase()),
+  suffix: z.string().min(0).optional().or(z.literal("")),
   birthdate: z.string().date(),
   osca: z.any(),
   ncsc: z.any(),
@@ -72,6 +71,7 @@ type Schema = z.output<typeof schema>;
 const state = reactive({
   lastname: "",
   firstname: "",
+  middlename: "",
   middlename: "",
   birthdate: "",
   osca: "",
@@ -89,6 +89,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   state.lastname = "";
   state.firstname = "";
   state.middlename = "";
+  state.suffix = "";
   state.birthdate = "";
   state.osca = "";
   state.ncsc = "";
@@ -117,7 +118,13 @@ async function updateCellValue(event: Event, id: string) {
   const form = event.target as HTMLFormElement;
   const input = form[0] as HTMLInputElement;
   const field = input.name;
-  const value = input.value.toUpperCase();
+  let value: string;
+
+  if (field === "suffix") {
+    value = input.value;
+  } else {
+    value = input.value.toUpperCase();
+  }
 
   await $fetch(`/api/update/${id}`, {
     method: "PUT",
@@ -150,6 +157,10 @@ const tableColumns: TableColumn[] = [
     key: "middlename",
     label: "Middlename",
     sortable: true,
+  },
+  {
+    key: "suffix",
+    label: "Name Suffix",
   },
   {
     key: "birthdate",
@@ -427,6 +438,54 @@ const filteredRows = computed(() => {
         </span>
       </template>
 
+      <!-- NAME SUFFIX -->
+      <template #suffix-data="{ row }">
+        <form
+          class="flex items-center gap-2"
+          v-if="
+            editableCell &&
+            editableCell.id === row.id &&
+            editableCell.column === 'suffix'
+          "
+          @submit.prevent="(e) => updateCellValue(e, row.id)"
+        >
+          <UInput
+            class="w-48"
+            v-model="row.suffix"
+            name="suffix"
+            autocomplete="off"
+            autofocus
+          />
+          <UButton
+            type="submit"
+            icon="i-heroicons-check-16-solid"
+            size="sm"
+            color="primary"
+            square
+          />
+          <UButton
+            icon="i-heroicons-x-mark-16-solid"
+            size="sm"
+            color="red"
+            square
+            @click="editableCell = null"
+          />
+        </form>
+        <span class="group flex items-center gap-2" v-else>
+          <p class="grow text-black">
+            {{ row.suffix }}
+          </p>
+          <UButton
+            class="invisible group-hover:visible"
+            icon="i-heroicons-pencil-square"
+            size="sm"
+            color="primary"
+            square
+            @click="editableCell = { id: row.id, column: 'suffix' }"
+          />
+        </span>
+      </template>
+
       <!-- BIRTHDATE -->
       <template #birthdate-data="{ row }">
         <form
@@ -629,7 +688,6 @@ const filteredRows = computed(() => {
         <div class="flex justify-center">
           <UButton
             icon="i-heroicons-trash"
-            label="Delete"
             color="red"
             variant="solid"
             @click="onPressDelete(row)"
@@ -664,6 +722,9 @@ const filteredRows = computed(() => {
         <UFormGroup label="Middle name" name="middlename">
           <UInput v-model="state.middlename" size="md" autocomplete="off" />
         </UFormGroup>
+        <UFormGroup label="Name suffix" name="suffix">
+          <UInput v-model="state.suffix" size="md" autocomplete="off" />
+        </UFormGroup>
         <UFormGroup label="Birthdate" name="birthdate">
           <input
             type="date"
@@ -694,14 +755,7 @@ const filteredRows = computed(() => {
       <p class="pb-4">
         Please confirm the deletion of data for:
         <br />
-        <strong>{{
-          dataToDelete &&
-          formatName(
-            dataToDelete.lastname,
-            dataToDelete.firstname,
-            dataToDelete.middlename
-          )
-        }}</strong>
+        <strong>{{ dataToDelete && formatName(dataToDelete) }}</strong>
       </p>
       <div class="flex gap-4 justify-end">
         <UButton label="Confirm" color="red" @click="confirmDelete()" />

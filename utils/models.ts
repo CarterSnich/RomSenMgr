@@ -3,6 +3,7 @@ export interface Senior {
   lastname: string;
   firstname: string;
   middlename?: string;
+  suffix?: string;
   birthdate: string;
   age?: number;
   osca?: string;

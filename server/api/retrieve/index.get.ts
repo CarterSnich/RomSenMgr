@@ -4,7 +4,6 @@ import { Senior } from "~/utils/models";
 import { getAgeFromDate } from "~/utils/utils";
 
 export default defineEventHandler((_) => {
-  setResponseStatus(_, 500, "test");
   try {
     const files = retrieveFiles();
     const seniorData: Senior[] = [];
