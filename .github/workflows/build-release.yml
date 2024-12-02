@@ -43,6 +43,6 @@ jobs:
       with:
         files: |
           romsenmgr.tar.gz
-        tag_name: ${{ github.sha }}
+        tag_name: $COMMIT_ID
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
