@@ -1,0 +1,38 @@
+name: Build and Create Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'  # Adjust to your required Node.js version
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build the project
+      run: npm run build
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          ./build/**/*  # Adjust the build folder if necessary
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Get commit ID and create a release
+      run: |
+        COMMIT_ID=$(git rev-parse --short HEAD)
+        gh release create $COMMIT_ID ./build/**/* --title "$COMMIT_ID" --notes "Release for commit $COMMIT_ID"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
