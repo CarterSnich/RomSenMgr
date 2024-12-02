@@ -45,6 +45,6 @@ jobs:
         files: |
           ./${COMMIT_ID}.tar.gz  # Use the generated tarball for the release
         prerelease: false  # Optional: set this if the release is not a prerelease
-        tag_name: env.COMMIT_ID
+        tag_name: ${{ env.COMMIT_ID }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
