@@ -18,11 +18,6 @@ jobs:
       run: |
         COMMIT_ID=$(git rev-parse --short HEAD)
         echo "COMMIT_ID=$COMMIT_ID" >> $GITHUB_ENV
-
-    - name: Test 
-      run: |
-        echo ${{ env.COMMIT_ID }}
-        echo $COMMIT_ID
       
     - name: Set up Node.js
       uses: actions/setup-node@v3
@@ -37,7 +32,7 @@ jobs:
 
     - name: Compress .output into tarball
       run: |
-        tar -czvf ./romsenmgr.tar.gz -C .output .
+        tar -czvf "./romsenmgr-$COMMIT_ID.tar.gz" -C .output .
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
@@ -53,7 +48,7 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: |
-          romsenmgr.tar.gz
+          romsenmgr-${{ env.COMMIT_ID }}.tar.gz
         tag_name: ${{ env.COMMIT_ID }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
