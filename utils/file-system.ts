@@ -10,14 +10,19 @@ export const DIR_PATH = Path.join(
 );
 
 function _initDir() {
-  const dirPath = Path.dirname(DIR_PATH);
-  if (!FileSystem.existsSync(dirPath)) {
-    FileSystem.mkdirSync(dirPath, { recursive: true });
+  try {
+    const dirPath = Path.dirname(DIR_PATH);
+    if (!FileSystem.existsSync(dirPath)) {
+      FileSystem.mkdirSync(dirPath, { recursive: true });
+    }
+  } catch (error) {
+    throw error;
   }
 }
 
 export function retrieveFiles() {
   try {
+    _initDir();
     return FileSystem.readdirSync(DIR_PATH);
   } catch (error) {
     throw error;
@@ -26,6 +31,7 @@ export function retrieveFiles() {
 
 export function readFile(path: string): Senior {
   try {
+    _initDir();
     const raw = FileSystem.readFileSync(path, "utf-8");
     return JSON.parse(raw);
   } catch (error) {
@@ -46,6 +52,7 @@ export function createFile(data: Senior) {
 
 export function updateFile(path: string, data: Senior) {
   try {
+    _initDir();
     const stringed = JSON.stringify(data);
     FileSystem.writeFileSync(path, stringed);
   } catch (error) {
@@ -55,6 +62,7 @@ export function updateFile(path: string, data: Senior) {
 
 export function deleteFile(path: string) {
   try {
+    _initDir();
     FileSystem.rmSync(path);
   } catch (error) {
     throw error;
