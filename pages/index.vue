@@ -1,15 +1,43 @@
 <script setup lang="ts">
-import type { FormSubmitEvent, TableColumn } from "#ui/types";
-import { z } from "zod";
-import type { Senior } from "../utils/models";
-
 useHead({
   title: "Index | RomSenMgr",
 });
 
+import type { FormSubmitEvent, TableColumn } from "#ui/types";
+import { z } from "zod";
+import type { Senior } from "../utils/models";
+
+const toast = useToast();
+
 const searchKey = ref("");
-const { data, refresh, status } = await useAsyncData(() =>
-  $fetch("/api/retrieve")
+const { data, refresh, status, error } = await useFetch("/api/retrieve");
+
+watch(
+  status,
+  (newStatus) => {
+    if (newStatus === "success") {
+      toast.add({
+        title: "Fetch files",
+        description: "Files retrieved successfully",
+        color: "primary",
+        close: {
+          icon: "i-heroicons-x-mark-20-solid",
+          color: "white",
+        },
+      });
+    } else {
+      toast.add({
+        title: "Fetch files",
+        description: error.value.statusMessage,
+        color: "red",
+        close: {
+          icon: "i-heroicons-x-mark-20-solid",
+          color: "white",
+        },
+      });
+    }
+  },
+  { immediate: true }
 );
 
 const addSeniorModal = ref(false);
@@ -209,7 +237,7 @@ const filteredRows = computed(() => {
         </UButton>
         <UButton
           icon="i-heroicons-arrow-path-16-solid"
-          @click="refresh()"
+          @click="refresh"
           class="rounded-none"
           variant="ghost"
         >
