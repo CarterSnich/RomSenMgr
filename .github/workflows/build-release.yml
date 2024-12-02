@@ -3,10 +3,6 @@ name: Build and Create Release
 on:
   workflow_dispatch:
 
-permissions:
-  contents: read  # Ensure the workflow has read access to the repository contents
-  id-token: write  # This is needed to fetch commit data in certain cases
-  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,14 +10,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-
-    - name: Get commit ID and create a tag
-      run: |
-        COMMIT_ID=$(git rev-parse --short HEAD)
-        git tag $COMMIT_ID
-        git push origin $COMMIT_ID
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
@@ -41,10 +29,11 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Create Release
+    - name: Create Release (No tag)
       uses: softprops/action-gh-release@v1
       with:
         files: |
           ./${COMMIT_ID}.tar.gz  # Use the generated tarball for the release
+        prerelease: false  # Optional: set this if the release is not a prerelease
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
