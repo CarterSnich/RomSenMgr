@@ -37,7 +37,7 @@ jobs:
           github.rest.git.createRef({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            ref: 'refs/tags/$COMMIT_ID',
+            ref: `refs/tags/${process.env.COMMIT_ID}`,
             sha: context.sha
           })
       env:
